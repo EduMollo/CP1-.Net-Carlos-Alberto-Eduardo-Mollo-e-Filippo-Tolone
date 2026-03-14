@@ -4,13 +4,7 @@ namespace LojaVirtual.Domain.Entities;
 
 public class EstoqueProduto : BaseEntity
 {
-    public Guid EstoqueId { get; private set; }
+    public Guid EstoqueId { get; set; }
 
-    public Guid ProdutoId { get; private set; }
-
-    public EstoqueProduto(Guid estoqueId, Guid produtoId)
-    {
-        EstoqueId = estoqueId;
-        ProdutoId = produtoId;
-    }
+    public Guid ProdutoId { get; set; }
 }
