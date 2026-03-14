@@ -1,18 +1,55 @@
+using LojaVirtual.Domain.Commons;
+
 namespace LojaVirtual.Domain.Entities;
 
-public class Produto
+public class Produto : BaseEntity
 {
-    public int IdProd { get; set; }
-    public string NomeProd { get; set; } = string.Empty;
-    public decimal PrecoProd { get; set; }
+    private const int MinLength = 2;
+    private const int MaxLength = 100;
 
-    // Relacionamento N:1 — Cada produto é comprado por um cliente (obrigatório)
-    public int ClienteId { get; set; }
-    public Cliente Cliente { get; set; } = null!;
+    public string NomeProd { get; private set; }
 
-    // Relacionamento N:N — Um produto está em muitos estoques
-    public ICollection<EstoqueProduto> EstoqueProdutos { get; set; } = new List<EstoqueProduto>();
+    public decimal PrecoProd { get; private set; }
 
-    // Relacionamento N:N — Um produto pertence a muitas categorias (opcional)
-    public ICollection<CategoriaProduto> CategoriaProdutos { get; set; } = new List<CategoriaProduto>();
+    // N:1
+    public Guid ClienteId { get; private set; }
+
+    // N:N
+    public List<EstoqueProduto> EstoqueProdutos { get; set; }
+
+    // N:N
+    public List<CategoriaProduto> CategoriaProdutos { get; set; }
+
+    public Produto(string nomeProd, decimal precoProd, Guid clienteId)
+    {
+        AtualizarNome(nomeProd);
+        AtualizarPreco(precoProd);
+        ClienteId = clienteId;
+    }
+
+    public void AtualizarNome(string nomeProd)
+    {
+        if (string.IsNullOrWhiteSpace(nomeProd))
+            throw new Exception("Nome do produto é obrigatório");
+
+        NomeProd = nomeProd.Length switch
+        {
+            < MinLength => throw new Exception("Nome do produto deve ter no mínimo 2 caracteres"),
+            > MaxLength => throw new Exception("Nome do produto deve ter no máximo 100 caracteres"),
+            _ => nomeProd.Trim()
+        };
+    }
+
+    public void AtualizarPreco(decimal precoProd)
+    {
+        if (precoProd < 0)
+            throw new Exception("Preço do produto não pode ser negativo");
+
+        PrecoProd = precoProd;
+    }
+
+    public override string ToString()
+    {
+        return $"Produto {NomeProd} - R$ {PrecoProd:F2}";
+    }
 }

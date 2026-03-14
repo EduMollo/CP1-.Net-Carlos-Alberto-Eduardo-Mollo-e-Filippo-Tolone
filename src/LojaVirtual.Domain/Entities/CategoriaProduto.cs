@@ -1,12 +1,16 @@
+using LojaVirtual.Domain.Commons;
+
 namespace LojaVirtual.Domain.Entities;
 
-/// Entidade associativa para o relacionamento N:N entre Categoria e Produto.
-
-public class CategoriaProduto
+public class CategoriaProduto : BaseEntity
 {
-    public int CategoriaId { get; set; }
-    public Categoria Categoria { get; set; } = null!;
+    public Guid CategoriaId { get; private set; }
 
-    public int ProdutoId { get; set; }
-    public Produto Produto { get; set; } = null!;
+    public Guid ProdutoId { get; private set; }
+
+    public CategoriaProduto(Guid categoriaId, Guid produtoId)
+    {
+        CategoriaId = categoriaId;
+        ProdutoId = produtoId;
+    }
 }

@@ -16,11 +16,11 @@
 
 | Entidade      | PK | Atributos |
 |---------------|----------------------|-------------------------------------------------------------------------------|
-| **Loja**      | `id_loja` (int)      | `nome_loja` (string), `cnpj_loja` (string)                                    |
-| **Estoque**   | `id_estoq` (int)     | `qntd_estoq` (int), `validade_estoq` (DateTime?)                              |
-| **Produto**   | `id_prod` (int)      | `nome_prod` (string), `preco_prod` (decimal)                                  |
-| **Categoria** | `id_categoria` (int) | `nome_categoria` (string), `desc_categoria` (string?)                         |
-| **Cliente**   | `id_cliente` (int)   | `nome_cliente` (string), `telefone_cliente` (string?), `cpf_cliente` (string) |
+| **Loja**      | `Id` (Guid)          | `NomeLoja` (string), `CnpjLoja` (string)                                      |
+| **Estoque**   | `Id` (Guid)          | `QntdEstoq` (int), `ValidadeEstoq` (DateTime?)                                |
+| **Produto**   | `Id` (Guid)          | `NomeProd` (string), `PrecoProd` (decimal)                                     |
+| **Categoria** | `Id` (Guid)          | `NomeCategoria` (string), `DescCategoria` (string?)                            |
+| **Cliente**   | `Id` (Guid)          | `NomeCliente` (string), `TelefoneCliente` (string?), `CpfCliente` (string)    |
 
 Além das 5 entidades principais, foram criadas 2 **entidades associativas** para os relacionamentos N:N:
 - **EstoqueProduto** (Estoque ↔ Produto)
@@ -45,6 +45,8 @@ O diagrama MER está disponível em [`docs/mer.jpeg`](docs/mer.jpeg).
 LojaVirtual.sln
 ├── src/
 │   ├── LojaVirtual.Domain/            → Camada de domínio (entidades)
+│   │   ├── Commons/
+│   │   │   └── BaseEntity.cs           → Classe base (Id, CreatedAt, Active)
 │   │   └── Entities/
 │   │       ├── Loja.cs
 │   │       ├── Estoque.cs
@@ -58,12 +60,12 @@ LojaVirtual.sln
 │   └── LojaVirtual.Api/              → Camada de apresentação (WebAPI)
 │       └── Program.cs
 ├── docs/
-│   └── mer.png                        → Diagrama MER
+│   └── mer.jpeg                       → Diagrama MER
 └── README.md
 ```
 
 ## Tecnologias
 
-- **.NET 9** (WebAPI)
+- **.NET 10** (WebAPI)
 - **C#**
 - Arquitetura: **Clean Architecture**

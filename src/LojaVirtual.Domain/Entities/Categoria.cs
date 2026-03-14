@@ -1,12 +1,27 @@
+using LojaVirtual.Domain.Commons;
+
 namespace LojaVirtual.Domain.Entities;
 
-public class Categoria
+public class Categoria : BaseEntity
 {
-    public int IdCategoria { get; set; }
-    public string NomeCategoria { get; set; } = string.Empty;
-    public string? DescCategoria { get; set; }
+    public string NomeCategoria { get; private set; }
 
-    // Relacionamento N:N — Uma categoria contém muitos produtos
-    
-    public ICollection<CategoriaProduto> CategoriaProdutos { get; set; } = new List<CategoriaProduto>();
+    public string? DescCategoria { get; private set; }
+
+    // N:N
+    public List<CategoriaProduto> CategoriaProdutos { get; set; }
+
+    public Categoria(string nomeCategoria, string? descCategoria = null)
+    {
+        if (string.IsNullOrWhiteSpace(nomeCategoria))
+            throw new Exception("Nome da categoria é obrigatório");
+
+        NomeCategoria = nomeCategoria;
+        DescCategoria = descCategoria;
+    }
+
+    public override string ToString()
+    {
+        return $"Categoria {NomeCategoria}";
+    }
 }

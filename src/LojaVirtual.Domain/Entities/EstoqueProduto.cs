@@ -1,12 +1,16 @@
+using LojaVirtual.Domain.Commons;
+
 namespace LojaVirtual.Domain.Entities;
 
-/// Entidade associativa para o relacionamento N:N entre Estoque e Produto.
-
-public class EstoqueProduto
+public class EstoqueProduto : BaseEntity
 {
-    public int EstoqueId { get; set; }
-    public Estoque Estoque { get; set; } = null!;
+    public Guid EstoqueId { get; private set; }
 
-    public int ProdutoId { get; set; }
-    public Produto Produto { get; set; } = null!;
+    public Guid ProdutoId { get; private set; }
+
+    public EstoqueProduto(Guid estoqueId, Guid produtoId)
+    {
+        EstoqueId = estoqueId;
+        ProdutoId = produtoId;
+    }
 }

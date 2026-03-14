@@ -1,15 +1,39 @@
+using LojaVirtual.Domain.Commons;
+
 namespace LojaVirtual.Domain.Entities;
 
-public class Estoque
+public class Estoque : BaseEntity
 {
-    public int IdEstoq { get; set; }
-    public int QntdEstoq { get; set; }
-    public DateTime? ValidadeEstoq { get; set; }
+    public int QntdEstoq { get; private set; }
 
-    // Relacionamento N:1 — Cada estoque pertence a uma loja
-    public int LojaId { get; set; }
-    public Loja Loja { get; set; } = null!;
+    public DateTime? ValidadeEstoq { get; private set; }
 
-    // Relacionamento N:N — Um estoque tem muitos produtos
-    public ICollection<EstoqueProduto> EstoqueProdutos { get; set; } = new List<EstoqueProduto>();
+    // N:1
+    public Guid LojaId { get; private set; }
+
+    // N:N
+    public List<EstoqueProduto> EstoqueProdutos { get; set; }
+
+    public Estoque(Guid lojaId, int qntdEstoq, DateTime? validadeEstoq = null)
+    {
+        if (qntdEstoq < 0)
+            throw new Exception("Quantidade em estoque não pode ser negativa");
+
+        LojaId = lojaId;
+        QntdEstoq = qntdEstoq;
+        ValidadeEstoq = validadeEstoq;
+    }
+
+    public void AtualizarQuantidade(int novaQuantidade)
+    {
+        if (novaQuantidade < 0)
+            throw new Exception("Quantidade em estoque não pode ser negativa");
+
+        QntdEstoq = novaQuantidade;
+    }
+
+    public override string ToString()
+    {
+        return $"Estoque - Qtd: {QntdEstoq} - Validade: {ValidadeEstoq?.ToString("dd/MM/yyyy") ?? "N/A"}";
+    }
 }
